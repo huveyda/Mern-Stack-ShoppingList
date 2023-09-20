@@ -1,4 +1,5 @@
 const express = require("express");
+const ShoppingList = require("../models/shoppingListModel");
 
 const router = express.Router();
 
@@ -13,8 +14,14 @@ router.get("/:id", (req, res) => {
 });
 
 //POST a new shopping list
-router.post("/", (req, res) => {
-  res.json({ mssg: "post a new shopping lists" });
+router.post("/", async (req, res) => {
+  const { title, items } = req.body;
+  try {
+    const shoppingList = await ShoppingList.create({ title, items });
+    res.status(200).json(shoppingList);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
 });
 
 router.delete("/:id", (req, res) => {
