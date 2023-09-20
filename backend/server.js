@@ -1,19 +1,19 @@
 require("dotenv").config();
 const express = require("express");
+const shoppingListsRoutes = require("./routes/shoppingLists");
 
 // express app
 const app = express();
 
 //middleware
+app.use(express.json());
 app.use((req, res, next) => {
   console.log(req.path, req.method);
   next();
 });
 
 //routes
-app.get("/", (req, res) => {
-  res.json({ mssg: "Welcome the app" });
-});
+app.use("/api/shoppingLists", shoppingListsRoutes);
 
 //listen for request
 app.listen(process.env.PORT, () => {
