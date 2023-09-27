@@ -9,7 +9,7 @@ const shoppingListSchema = new Schema(
       required: true,
     },
     items: {
-      type: Array,
+      type: String,
       required: false,
     },
   },

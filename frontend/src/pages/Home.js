@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 
 //components
 import ShoppingListDetails from "../components/ShoppingListDetails";
+import ShoppingListForm from "../components/ShoppingListForm";
 
 function Home() {
   const [shoppingLists, setShoppingLists] = useState(null);
@@ -18,7 +19,7 @@ function Home() {
     fetchShoppingLists();
   }, []);
   return (
-    <div>
+    <div className="home">
       <div className="shoppingLists">
         {shoppingLists &&
           shoppingLists.map((shoppingList) => (
@@ -28,6 +29,7 @@ function Home() {
             />
           ))}
       </div>
+      <ShoppingListForm />
     </div>
   );
 }
