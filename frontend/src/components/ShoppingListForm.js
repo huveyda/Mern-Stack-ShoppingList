@@ -2,30 +2,44 @@ import React, { useState } from "react";
 
 function ShoppingListForm() {
   const [title, setTitle] = useState("");
-  const [items, setItems] = useState("");
+  const [items, setItems] = useState([{ item: "", quantity: "" }]);
   const [error, setError] = useState(null);
+
+  const handleItemChange = (index, field, value) => {
+    const updatedItems = [...items];
+    updatedItems[index][field] = value;
+    setItems(updatedItems);
+  };
+
+  const addNewItem = () => {
+    setItems([...items, { item: "", quantity: "" }]);
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     const shoppingList = { title, items };
 
-    const response = await fetch("/api/shoppingLists", {
-      method: "POST",
-      body: JSON.stringify(shoppingList),
-      headers: { "Content-Type": "application/json" },
-    });
+    try {
+      const response = await fetch("/api/shoppingLists", {
+        method: "POST",
+        body: JSON.stringify(shoppingList),
+        headers: { "Content-Type": "application/json" },
+      });
 
-    const json = await response.json();
+      const json = await response.json();
 
-    if (!response.ok) {
-      setError(json.error);
-    }
-    if (response.ok) {
-      setError(null);
-      setTitle("");
-      setItems("");
-      console.log("Added a new shopping list: ", json);
+      if (!response.ok) {
+        setError(json.error);
+      } else {
+        setError(null);
+        setTitle("");
+        setItems([{ item: "", quantity: "" }]);
+        console.log("Added a new shopping list: ", json);
+      }
+    } catch (error) {
+      console.error("Error while submitting shopping list:", error);
+      setError("An error occurred while submitting the form.");
     }
   };
 
@@ -39,11 +53,25 @@ function ShoppingListForm() {
         value={title}
       />
       <label>Items:</label>
-      <input
-        type="text"
-        onChange={(e) => setItems(e.target.value)}
-        value={items}
-      />
+      {items.map((item, index) => (
+        <div key={index}>
+          <input
+            type="text"
+            placeholder="Item"
+            value={item.item}
+            onChange={(e) => handleItemChange(index, "item", e.target.value)}
+          />
+          <input
+            type="text"
+            placeholder="Quantity"
+            value={item.quantity}
+            onChange={(e) =>
+              handleItemChange(index, "quantity", e.target.value)
+            }
+          />
+        </div>
+      ))}
+      <button onClick={addNewItem}>Add Item</button>
       <button>Add Shopping List</button>
       {error && <div className="error">{error}</div>}
     </form>

@@ -6,9 +6,15 @@ function ShoppingListDetails({ shoppingList }) {
       <h4>{shoppingList.title}</h4>
       <p>
         <strong>Shopping Items:</strong>
-        {shoppingList.items}
       </p>
-      <p>{shoppingList.createdAt}</p>
+      <ul>
+        {shoppingList.items.map((item, index) => (
+          <li key={index}>
+            {item.item}: {item.quantity}
+          </li>
+        ))}
+      </ul>
+      <p>Created At: {shoppingList.createdAt}</p>
     </div>
   );
 }
