@@ -18,7 +18,7 @@ function Home() {
       }
     };
     fetchShoppingLists();
-  }, []);
+  }, [dispatch]);
   return (
     <div className="home">
       <div className="shoppingLists">
