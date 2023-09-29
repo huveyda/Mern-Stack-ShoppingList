@@ -1,11 +1,12 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import { useShoppingListsContext } from "../hooks/useShoppingListsContext";
 
 //components
 import ShoppingListDetails from "../components/ShoppingListDetails";
 import ShoppingListForm from "../components/ShoppingListForm";
 
 function Home() {
-  const [shoppingLists, setShoppingLists] = useState(null);
+  const { shoppingLists, dispatch } = useShoppingListsContext();
 
   useEffect(() => {
     const fetchShoppingLists = async () => {
@@ -13,7 +14,7 @@ function Home() {
       const json = await response.json();
 
       if (response.ok) {
-        setShoppingLists(json);
+        dispatch({ type: "SET_SHOPPINGLISTS", payload: json });
       }
     };
     fetchShoppingLists();

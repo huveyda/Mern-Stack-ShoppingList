@@ -1,6 +1,8 @@
 import React, { useState } from "react";
+import { useShoppingListsContext } from "../hooks/useShoppingListsContext";
 
 function ShoppingListForm() {
+  const { dispatch } = useShoppingListsContext();
   const [title, setTitle] = useState("");
   const [items, setItems] = useState([{ item: "", quantity: "" }]);
   const [error, setError] = useState(null);
@@ -36,6 +38,7 @@ function ShoppingListForm() {
         setTitle("");
         setItems([{ item: "", quantity: "" }]);
         console.log("Added a new shopping list: ", json);
+        dispatch({ type: "CREATE_SHOPPINGLIST", payload: json });
       }
     } catch (error) {
       console.error("Error while submitting shopping list:", error);
